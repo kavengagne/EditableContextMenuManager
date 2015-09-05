@@ -20,6 +20,7 @@ namespace MenuManager.App
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainWindowViewModel();
         }
 
         private void AddButton_OnClick(object sender, RoutedEventArgs e)
