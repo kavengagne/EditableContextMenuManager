@@ -15,11 +15,5 @@ namespace MenuManager.App
         public App()
         {
         }
-
-
-        protected override void OnActivated(EventArgs e)
-        {
-            base.OnActivated(e);
-        }
     }
 }

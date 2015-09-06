@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="MenuManager.App.MenuControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:app="clr-namespace:MenuManager.App"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance app:TabItemsMock, d:IsDesignTimeCreatable=True}">
+    
+    <UserControl.Resources>
+        <app:TabItemMarginConverter x:Key="TabItemMarginConverter" />
+    </UserControl.Resources>
+
+    <TabControl ItemsSource="{Binding Items}"
+                TabStripPlacement="Left"
+                Padding="0" BorderThickness="0"
+                Margin="{Binding Top, Converter={StaticResource TabItemMarginConverter}}">
+        <TabControl.ItemTemplate>
+            <DataTemplate DataType="app:JsonMenuItem">
+                <TextBlock Text="{Binding Name}"></TextBlock>
+            </DataTemplate>
+        </TabControl.ItemTemplate>
+        <TabControl.ContentTemplate>
+            <DataTemplate DataType="app:JsonMenuItem">
+                <app:MenuControl DataContext="{Binding}"></app:MenuControl>
+            </DataTemplate>
+        </TabControl.ContentTemplate>
+    </TabControl>
+</UserControl>
