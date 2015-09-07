@@ -8,6 +8,14 @@ namespace MenuManager.App
         private string _separator;
         private string _verb;
 
+
+        public CommandParameters()
+        {
+            Separator = " ";
+            Verb = "";
+        }
+
+
         public string Separator
         {
             get { return _separator; }

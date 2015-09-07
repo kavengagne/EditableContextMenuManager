@@ -7,6 +7,7 @@ namespace MenuManager.App
 {
     public class TabItemsMock : ObservableObject
     {
+        public int Top { get; set; }
         public ObservableCollection<JsonMenuItem> Items { get; set; }
         public TabItemsMock()
         {

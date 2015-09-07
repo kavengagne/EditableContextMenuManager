@@ -77,6 +77,7 @@
     </ApplicationDefinition>
     <Compile Include="CommandParameters.cs" />
     <Compile Include="JsonMenuItem.cs" />
+    <Compile Include="JsonMenuItemObservableCollection.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="MenuControl.xaml.cs">
       <DependentUpon>MenuControl.xaml</DependentUpon>

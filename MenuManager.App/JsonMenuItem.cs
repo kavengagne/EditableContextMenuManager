@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
+using System.Windows.Input;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 
 
 namespace MenuManager.App
@@ -14,9 +14,15 @@ namespace MenuManager.App
         private CommandParameters _commandParameters;
         private int _top;
 
+        private ICommand _addSubMenuCommand;
+
 
         public JsonMenuItem()
         {
+            Icon = "";
+            Command = "";
+            CommandParameters = new CommandParameters();
+
             Items = new JsonMenuItemObservableCollection();
         }
 
@@ -72,27 +78,16 @@ namespace MenuManager.App
                 RaisePropertyChanged(() => Top);
             }
         }
-    }
+
+        public ICommand AddSubMenuCommand => _addSubMenuCommand ?? (_addSubMenuCommand = new RelayCommand(AddSubMenu));
 
 
-    public class JsonMenuItemObservableCollection : ObservableCollection<JsonMenuItem>
-    {
-        public JsonMenuItemObservableCollection()
+        private void AddSubMenu()
         {
-            
-        }
-
-        public JsonMenuItemObservableCollection(List<JsonMenuItem> list) : base(list)
-        {
-            
-        }
-
-        private const int ItemHeight = 20;
-
-        protected override void InsertItem(int index, JsonMenuItem item)
-        {
-            item.Top = Count * ItemHeight;
-            base.InsertItem(index, item);
+            Items.Add(new JsonMenuItem
+            {
+                Name = "New Item"
+            });
         }
     }
 }
