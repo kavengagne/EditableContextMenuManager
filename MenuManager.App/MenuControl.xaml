@@ -7,10 +7,121 @@
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance app:TabItemsMock, d:IsDesignTimeCreatable=True}">
-    
+
     <UserControl.Resources>
         <app:TabItemMarginConverter x:Key="TabItemMarginConverter" />
         <app:ParentToVisibilityConverter x:Key="ParentToVisibilityConverter" />
+        
+        <LinearGradientBrush x:Key="TabItem.Static.Background" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#F0F0F0" Offset="0.0"/>
+            <GradientStop Color="#E5E5E5" Offset="1.0"/>
+        </LinearGradientBrush>
+        
+        <LinearGradientBrush x:Key="TabItem.MouseOver.Background" EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#ECF4FC" Offset="0.0"/>
+            <GradientStop Color="#DCECFC" Offset="1.0"/>
+        </LinearGradientBrush>
+
+        <SolidColorBrush x:Key="TabItem.Static.Border" Color="#ACACAC"/>
+        <SolidColorBrush x:Key="TabItem.MouseOver.Border" Color="#7EB4EA"/>
+        <SolidColorBrush x:Key="TabItem.Disabled.Background" Color="#F0F0F0"/>
+        <SolidColorBrush x:Key="TabItem.Disabled.Border" Color="#D9D9D9"/>
+        <SolidColorBrush x:Key="TabItem.Selected.Border" Color="#ACACAC"/>
+        <SolidColorBrush x:Key="TabItem.Selected.Background" Color="#FFFFFF"/>
+        
+        <Style x:Key="MenuItemContainerStyle" TargetType="{x:Type TabItem}">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="{StaticResource TabItem.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TabItem.Static.Border}"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="6,2,6,2"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Grid x:Name="templateRoot" SnapsToDevicePixels="true">
+                            <Border x:Name="mainBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1,1,1,0"
+                                    Background="{TemplateBinding Background}" Margin="0">
+                                <Border x:Name="innerBorder" BorderBrush="{StaticResource TabItem.Selected.Border}"
+                                        BorderThickness="1,1,1,1" Background="{StaticResource TabItem.Selected.Background}"
+                                        Margin="-1" Opacity="0"/>
+                            </Border>
+                            <ContentPresenter x:Name="contentPresenter"
+                                              ContentSource="Header" Focusable="False"
+                                              HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
+                                              Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                    <Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" Value="Left"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Background" TargetName="mainBorder" Value="{StaticResource TabItem.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="mainBorder" Value="{StaticResource TabItem.MouseOver.Border}"/>
+                                <Setter Property="BorderThickness" TargetName="innerBorder" Value="1,1,1,1"/>
+                                <Setter Property="BorderThickness" TargetName="mainBorder" Value="1,1,1,1"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                    <Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" Value="Left"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Opacity" TargetName="contentPresenter" Value="0.56"/>
+                                <Setter Property="Background" TargetName="mainBorder" Value="{StaticResource TabItem.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="mainBorder" Value="{StaticResource TabItem.Disabled.Border}"/>
+                                <Setter Property="BorderThickness" TargetName="innerBorder" Value="1,1,1,1"/>
+                                <Setter Property="BorderThickness" TargetName="mainBorder" Value="1,1,1,1"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                    <Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" Value="Left"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="BorderThickness" TargetName="innerBorder" Value="1,1,1,1"/>
+                                <Setter Property="BorderThickness" TargetName="mainBorder" Value="1,1,1,1"/>
+                                <Setter Property="Background" TargetName="mainBorder" Value="Cornsilk"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding DataContext.Items.Count, RelativeSource={RelativeSource Self}}" Value="0"/>
+                                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="false"/>
+                                    <Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" Value="Left"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="BorderThickness" TargetName="innerBorder" Value="1,1,1,1"/>
+                                <Setter Property="BorderThickness" TargetName="mainBorder" Value="1,1,1,1"/>
+                                <Setter Property="Background" TargetName="mainBorder" Value="{StaticResource TabItem.Static.Background}"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                    <Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" Value="Left"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Panel.ZIndex" Value="1"/>
+                                <Setter Property="Margin" Value="-2,-2,0,-2"/>
+                                <Setter Property="Opacity" TargetName="innerBorder" Value="1"/>
+                                <Setter Property="BorderThickness" TargetName="innerBorder" Value="1,1,0,1"/>
+                                <Setter Property="BorderThickness" TargetName="mainBorder" Value="1,1,0,1"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding DataContext.Items.Count, RelativeSource={RelativeSource Self}}" Value="0"/>
+                                    <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                    <Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" Value="Left"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Panel.ZIndex" Value="1"/>
+                                <Setter Property="Margin" Value="-2,-2,0,-2"/>
+                                <Setter Property="Opacity" TargetName="innerBorder" Value="1"/>
+                                <Setter Property="BorderThickness" TargetName="innerBorder" Value="1,1,1,1"/>
+                                <Setter Property="BorderThickness" TargetName="mainBorder" Value="1,1,1,1"/>
+                            </MultiDataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <TabControl ItemsSource="{Binding Items}"
@@ -18,7 +129,8 @@
                 TabStripPlacement="Left"
                 Padding="0" BorderThickness="0"
                 SelectedIndex="{Binding SelectedItemIndex}"
-                Margin="{Binding Top, Converter={StaticResource TabItemMarginConverter}}">
+                Margin="{Binding Top, Converter={StaticResource TabItemMarginConverter}}"
+                ItemContainerStyle="{DynamicResource MenuItemContainerStyle}">
         <TabControl.ItemTemplate>
             <DataTemplate DataType="app:JsonMenuItem">
                 <StackPanel Orientation="Horizontal">
@@ -26,8 +138,7 @@
                     <Rectangle Width="5" />
                     <Button Padding="5,0" Background="Transparent"
                             BorderThickness="0" Cursor="Hand"
-                            Command="{Binding AddSubMenuCommand}"
-                            >
+                            Command="{Binding AddSubMenuCommand}">
                         <Grid>
                             <Rectangle Width="10" Height="2" Fill="Black" />
                             <Rectangle Width="10" Height="2" Fill="Black" RenderTransformOrigin="0.5,0.5">

@@ -10,7 +10,7 @@
     <Window.Resources>
         
     </Window.Resources>
-    
+
     <Grid d:DataContext="{d:DesignInstance app:MainWindowViewModel, d:IsDesignTimeCreatable=True}">
         <StackPanel Orientation="Horizontal">
             <app:MenuControl DataContext="{Binding MainMenu}"></app:MenuControl>
