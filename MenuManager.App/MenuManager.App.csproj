@@ -82,6 +82,7 @@
     <Compile Include="MenuControl.xaml.cs">
       <DependentUpon>MenuControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ParentToVisibilityConverter.cs" />
     <Compile Include="TabItemMarginConverter.cs" />
     <Compile Include="TabItemsMock.cs" />
     <Page Include="MainWindow.xaml">

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 
 
 namespace MenuManager.App
@@ -19,47 +17,52 @@ namespace MenuManager.App
 
             var sub1 = new JsonMenuItem()
             {
-                Name = "Item 1"
+                Name = "Item 1",
+                ParentItem = menu
             };
 
             var sub2 = new JsonMenuItem()
             {
-                Name = "Item 2"
+                Name = "Item 2",
+                ParentItem = menu
             };
 
             var subsub1 = new JsonMenuItem
             {
-                Name = "Test 3"
+                Name = "Test 3",
+                ParentItem = sub1
             };
 
             var subsubsub1 = new JsonMenuItem
             {
-                Name = "Test 4"
+                Name = "Test 4",
+                ParentItem = subsub1
             };
 
-            subsubsub1.Items.Add(new JsonMenuItem { Name = "Test 1" });
-            subsubsub1.Items.Add(new JsonMenuItem { Name = "Test 2" });
-            subsubsub1.Items.Add(new JsonMenuItem { Name = "Test 3" });
+            subsubsub1.Items.Add(new JsonMenuItem { Name = "Test 1", ParentItem = subsubsub1 });
+            subsubsub1.Items.Add(new JsonMenuItem { Name = "Test 2", ParentItem = subsubsub1 });
+            subsubsub1.Items.Add(new JsonMenuItem { Name = "Test 3", ParentItem = subsubsub1 });
 
-            subsub1.Items.Add(new JsonMenuItem { Name = "Test 1" });
-            subsub1.Items.Add(new JsonMenuItem { Name = "Test 2" });
-            subsub1.Items.Add(new JsonMenuItem { Name = "Test 3" });
+            subsub1.Items.Add(new JsonMenuItem { Name = "Test 1", ParentItem = subsub1 });
+            subsub1.Items.Add(new JsonMenuItem { Name = "Test 2", ParentItem = subsub1 });
+            subsub1.Items.Add(new JsonMenuItem { Name = "Test 3", ParentItem = subsub1 });
             subsub1.Items.Add(subsubsub1);
-            subsub1.Items.Add(new JsonMenuItem { Name = "Test 5" });
-            subsub1.Items.Add(new JsonMenuItem { Name = "Test 6" });
+            subsub1.Items.Add(new JsonMenuItem { Name = "Test 5", ParentItem = subsub1 });
+            subsub1.Items.Add(new JsonMenuItem { Name = "Test 6", ParentItem = subsub1 });
 
 
-            sub1.Items.Add(new JsonMenuItem { Name = "Test 1" });
-            sub1.Items.Add(new JsonMenuItem { Name = "Test 2" });
+            sub1.Items.Add(new JsonMenuItem { Name = "Test 1", ParentItem = sub1 });
+            sub1.Items.Add(new JsonMenuItem { Name = "Test 2", ParentItem = sub1 });
             sub1.Items.Add(subsub1);
 
-            sub2.Items.Add(new JsonMenuItem { Name = "Test 1" });
-            sub2.Items.Add(new JsonMenuItem { Name = "Test 2" });
+            sub2.Items.Add(new JsonMenuItem { Name = "Test 1", ParentItem = sub2 });
+            sub2.Items.Add(new JsonMenuItem { Name = "Test 2", ParentItem = sub2 });
 
             menu.Items.Add(sub1);
             menu.Items.Add(sub2);
 
             MainMenu = new JsonMenuItem();
+            menu.ParentItem = MainMenu;
             MainMenu.Items.Add(menu);
         }
     }

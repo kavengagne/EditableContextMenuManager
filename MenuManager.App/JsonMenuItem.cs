@@ -1,5 +1,4 @@
-﻿using System.Collections.Specialized;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 
@@ -12,9 +11,14 @@ namespace MenuManager.App
         private string _icon;
         private string _command;
         private CommandParameters _commandParameters;
-        private int _top;
 
+        private int _top;
+        private int _selectedItemIndex;
+        private int _itemIndex;
+        private JsonMenuItem _parentItem;
+        
         private ICommand _addSubMenuCommand;
+        private ICommand _deleteSubMenuCommand;
 
 
         public JsonMenuItem()
@@ -79,15 +83,64 @@ namespace MenuManager.App
             }
         }
 
+        public int SelectedItemIndex
+        {
+            get { return _selectedItemIndex; }
+            set
+            {
+                _selectedItemIndex = value;
+                RaisePropertyChanged(() => SelectedItemIndex);
+            }
+        }
+
+        public int ItemIndex
+        {
+            get { return _itemIndex; }
+            set
+            {
+                _itemIndex = value;
+                RaisePropertyChanged(() => ItemIndex);
+            }
+        }
+
+        public JsonMenuItem ParentItem
+        {
+            get { return _parentItem; }
+            set
+            {
+                _parentItem = value;
+                RaisePropertyChanged(() => ParentItem);
+            }
+        }
+
+
         public ICommand AddSubMenuCommand => _addSubMenuCommand ?? (_addSubMenuCommand = new RelayCommand(AddSubMenu));
+
+        public ICommand DeleteSubMenuCommand
+            => _deleteSubMenuCommand ?? (_deleteSubMenuCommand = new RelayCommand(DeleteSubMenu));
 
 
         private void AddSubMenu()
         {
+            if (ParentItem != null)
+            {
+                ParentItem.SelectedItemIndex = ItemIndex;
+            }
             Items.Add(new JsonMenuItem
             {
-                Name = "New Item"
+                Name = "New Item",
+                ParentItem = this
             });
+        }
+
+        private void DeleteSubMenu()
+        {
+            ParentItem?.DeleteItem(this);
+        }
+
+        private void DeleteItem(JsonMenuItem item)
+        {
+            Items.Remove(item);
         }
     }
 }

@@ -10,12 +10,14 @@
     
     <UserControl.Resources>
         <app:TabItemMarginConverter x:Key="TabItemMarginConverter" />
+        <app:ParentToVisibilityConverter x:Key="ParentToVisibilityConverter" />
     </UserControl.Resources>
 
     <TabControl ItemsSource="{Binding Items}"
                 Name="menuTabControl"
                 TabStripPlacement="Left"
                 Padding="0" BorderThickness="0"
+                SelectedIndex="{Binding SelectedItemIndex}"
                 Margin="{Binding Top, Converter={StaticResource TabItemMarginConverter}}">
         <TabControl.ItemTemplate>
             <DataTemplate DataType="app:JsonMenuItem">
@@ -24,12 +26,30 @@
                     <Rectangle Width="5" />
                     <Button Padding="5,0" Background="Transparent"
                             BorderThickness="0" Cursor="Hand"
-                            Command="{Binding AddSubMenuCommand}">
+                            Command="{Binding AddSubMenuCommand}"
+                            >
                         <Grid>
                             <Rectangle Width="10" Height="2" Fill="Black" />
                             <Rectangle Width="10" Height="2" Fill="Black" RenderTransformOrigin="0.5,0.5">
                                 <Rectangle.RenderTransform>
                                     <RotateTransform Angle="90"></RotateTransform>
+                                </Rectangle.RenderTransform>
+                            </Rectangle>
+                        </Grid>
+                    </Button>
+                    <Button Padding="5,0" Background="Transparent"
+                            BorderThickness="0" Cursor="Hand"
+                            Command="{Binding DeleteSubMenuCommand}"
+                            Visibility="{Binding ParentItem, Converter={StaticResource ParentToVisibilityConverter}}">
+                        <Grid>
+                            <Rectangle Width="10" Height="2" Fill="Black" RenderTransformOrigin="0.5,0.5">
+                                <Rectangle.RenderTransform>
+                                    <RotateTransform Angle="-45"></RotateTransform>
+                                </Rectangle.RenderTransform>
+                            </Rectangle>
+                            <Rectangle Width="10" Height="2" Fill="Black" RenderTransformOrigin="0.5,0.5">
+                                <Rectangle.RenderTransform>
+                                    <RotateTransform Angle="45"></RotateTransform>
                                 </Rectangle.RenderTransform>
                             </Rectangle>
                         </Grid>

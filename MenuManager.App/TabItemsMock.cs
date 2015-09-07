@@ -9,6 +9,9 @@ namespace MenuManager.App
     {
         public int Top { get; set; }
         public ObservableCollection<JsonMenuItem> Items { get; set; }
+
+        public int SelectedItemIndex { get; } = 0;
+
         public TabItemsMock()
         {
             Items = new ObservableCollection<JsonMenuItem>();
